@@ -1,0 +1,95 @@
+{
+  "name": "neko-run",
+  "productName": "Neko Run",
+  "version": "1.0.0",
+  "description": "Neko Run - a pixel cat runner game by the Nekomo community",
+  "author": {
+    "name": "Nekomo",
+    "email": "88599122+MarshMeadow@users.noreply.github.com"
+  },
+  "license": "UNLICENSED",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "copy-web": "node scripts/copy-web.js",
+    "start": "npm run copy-web && electron .",
+    "dist": "npm run copy-web && electron-builder --win --x64 --publish never",
+    "dist:linux": "npm run copy-web && electron-builder --linux --x64 --publish never"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "app.nekomo.nekorun",
+    "productName": "Neko Run",
+    "artifactName": "Neko-Run-${version}-${os}-${arch}-${target}.${ext}",
+    "files": [
+      "main.js",
+      "preload.js",
+      "app/**/*"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "Neko Run",
+      "artifactName": "Neko-Run-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Neko-Run-${version}-portable.${ext}"
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Game",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "Neko-Run-${version}-linux-${arch}.${ext}",
+      "desktop": {
+        "Name": "Neko Run",
+        "Comment": "Pixel cat runner game"
+      }
+    },
+    "deb": {
+      "artifactName": "neko-run_${version}_amd64.${ext}"
+    },
+    "appImage": {
+      "artifactName": "Neko-Run-${version}-x86_64.${ext}"
+    }
+  },
+  "homepage": "https://github.com/Nekomo-App/Neko-Run"
+}

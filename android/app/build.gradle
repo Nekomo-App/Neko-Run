@@ -1,0 +1,57 @@
+plugins {
+    id 'com.android.application'
+}
+
+// Release signing: put storeFile/storePassword/keyAlias/keyPassword in android/keystore.properties
+// (git-ignored) or NEKORUN_* environment variables. Without them the release APK is unsigned.
+def ksProps = new Properties()
+def ksFile = rootProject.file('keystore.properties')
+if (ksFile.exists()) ksFile.withInputStream { ksProps.load(it) }
+def ks = { String k -> ksProps.getProperty(k) ?: System.getenv('NEKORUN_' + k.replaceAll(/([A-Z])/, '_$1').toUpperCase()) }
+
+android {
+    namespace 'app.nekomo.nekorun'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'app.nekomo.nekorun'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    signingConfigs {
+        release {
+            if (ks('storeFile')) {
+                storeFile file(ks('storeFile'))
+                storePassword ks('storePassword')
+                keyAlias ks('keyAlias')
+                keyPassword ks('keyPassword')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            if (ks('storeFile')) signingConfig signingConfigs.release
+        }
+    }
+
+    // The game itself lives in ../web and is shared with the website and the Windows build.
+    sourceSets {
+        main.assets.srcDirs += ["$rootDir/../web"]
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.webkit:webkit:1.11.0'
+}
