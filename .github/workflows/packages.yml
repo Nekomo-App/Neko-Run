@@ -1,0 +1,49 @@
+name: Packages
+
+# Publishes the web game to GitHub Packages whenever a release is published:
+#   npm:       @nekomo-app/neko-run       (npm.pkg.github.com)
+#   container: ghcr.io/nekomo-app/neko-run (nginx serving web/)
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: '@nekomo-app'
+      - name: Publish @nekomo-app/neko-run
+        working-directory: web
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read version
+        id: v
+        run: echo "version=$(node -p "require('./web/package.json').version")" >> "$GITHUB_OUTPUT"
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/nekomo-app/neko-run:${{ steps.v.outputs.version }}
+            ghcr.io/nekomo-app/neko-run:latest

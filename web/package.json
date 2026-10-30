@@ -1,0 +1,25 @@
+{
+  "name": "@nekomo-app/neko-run",
+  "version": "1.0.1",
+  "description": "Neko Run - the embeddable pixel cat runner game from the Nekomo community (no dependencies)",
+  "main": "neko-run.js",
+  "browser": "neko-run.js",
+  "files": [
+    "neko-run.js",
+    "index.html",
+    "icon.png",
+    "fonts/"
+  ],
+  "keywords": ["game", "runner", "pixel-art", "canvas", "nekomo"],
+  "author": "Nekomo",
+  "license": "UNLICENSED",
+  "homepage": "https://nekomoapp.netlify.app/neko-run",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nekomo-App/Neko-Run.git",
+    "directory": "web"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
