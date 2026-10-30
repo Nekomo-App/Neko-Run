@@ -47,8 +47,15 @@
           "arch": [
             "x64"
           ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
         }
-      ]
+      ],
+      "artifactName": "Neko-Run-${version}-win.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -76,6 +83,18 @@
           "arch": [
             "x64"
           ]
+        },
+        {
+          "target": "rpm",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "artifactName": "Neko-Run-${version}-linux-${arch}.${ext}",
@@ -89,6 +108,9 @@
     },
     "appImage": {
       "artifactName": "Neko-Run-${version}-x86_64.${ext}"
+    },
+    "rpm": {
+      "artifactName": "neko-run-${version}.x86_64.${ext}"
     }
   },
   "homepage": "https://github.com/Nekomo-App/Neko-Run"

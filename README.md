@@ -14,7 +14,25 @@ Grab the latest build from [Releases](https://github.com/Nekomo-App/Neko-Run/rel
 | Windows (portable) | `Neko-Run-<version>-portable.exe` | No install, just run it |
 | Android | `Neko-Run-<version>.apk` | Android 7.0+. Allow *Install unknown apps* for your browser / file manager |
 | Linux (AppImage) | `Neko-Run-<version>-x86_64.AppImage` | `chmod +x` it and run |
+| Windows (zip) | `Neko-Run-<version>-win.zip` | Unzip anywhere and run `Neko Run.exe` |
 | Linux (Debian/Ubuntu) | `neko-run_<version>_amd64.deb` | `sudo apt install ./neko-run_<version>_amd64.deb` |
+| Linux (Fedora/openSUSE) | `neko-run-<version>.x86_64.rpm` | `sudo dnf install ./neko-run-<version>.x86_64.rpm` |
+| Linux (tarball) | `Neko-Run-<version>-linux-x64.tar.gz` | Extract and run `neko-run` |
+
+`SHA256SUMS.txt` in each release lists the checksum of every file.
+
+Website page: https://nekomoapp.netlify.app/neko-run
+
+## Packages
+
+Each published release also pushes the web game to [GitHub Packages](https://github.com/orgs/Nekomo-App/packages?repo_name=Neko-Run) (`.github/workflows/packages.yml`):
+
+| Package | Use it |
+| --- | --- |
+| npm: `@nekomo-app/neko-run` | Add `@nekomo-app:registry=https://npm.pkg.github.com` to `.npmrc`, then `npm install @nekomo-app/neko-run` and load `node_modules/@nekomo-app/neko-run/neko-run.js` |
+| Container: `ghcr.io/nekomo-app/neko-run` | `docker run -p 8080:80 ghcr.io/nekomo-app/neko-run` and open http://localhost:8080 |
+
+The npm package and the image version follow `web/package.json`. Keep it in step with `desktop/package.json` when you bump the version.
 
 ## How to play
 
@@ -37,7 +55,7 @@ Sound, volume, difficulty (Easy / Normal / Hard, separate high scores), cat colo
 
 ```
 web/        the game: neko-run.js (engine, no dependencies), index.html (app shell), fonts, icon
-desktop/    Electron wrapper -> Windows .exe and Linux AppImage/.deb
+desktop/    Electron wrapper -> Windows .exe/.zip and Linux AppImage/.deb/.rpm/.tar.gz
 android/    Android WebView wrapper -> .apk (loads web/ as app assets)
 scripts/    make_icons.py regenerates every app icon from the pixel cat sprite
 ```
