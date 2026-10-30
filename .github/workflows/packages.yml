@@ -24,7 +24,10 @@ jobs:
           scope: '@nekomo-app'
       - name: Publish @nekomo-app/neko-run
         working-directory: web
-        run: npm publish
+        # Versions are immutable on GitHub Packages, so reruns skip a version that is already there.
+        run: |
+          v=$(node -p "require('./package.json').version")
+          if npm view "@nekomo-app/neko-run@$v" version >/dev/null 2>&1; then echo "$v already published, skipping"; else npm publish; fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -46,4 +49,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/nekomo-app/neko-run:${{ steps.v.outputs.version }}
-            ghcr.io/nekomo-app/neko-run:latest
+            ${{ (github.event_name != 'release' || !github.event.release.prerelease) && 'ghcr.io/nekomo-app/neko-run:latest' || '' }}
